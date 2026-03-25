@@ -171,7 +171,7 @@ def plot_temporal_attention(results_df):
 
 
 def plot_training_curves():
-    """Plot training loss and accuracy curves."""
+    """Plot training loss and accuracy curves with smoothing."""
     print("  Generating training curves...")
 
     log_path = Path('models/training_log.json')
@@ -182,13 +182,32 @@ def plot_training_curves():
     with open(log_path) as f:
         log = json.load(f)
 
+    def smooth(values, weight=0.85):
+        """Exponential moving average smoothing."""
+        smoothed = []
+        last = values[0]
+        for v in values:
+            s = weight * last + (1 - weight) * v
+            smoothed.append(s)
+            last = s
+        return smoothed
+
     fig, axes = plt.subplots(1, 3, figsize=(16, 4.5))
 
     # Pretraining loss
     if 'pretrain' in log and log['pretrain']['train_loss']:
         ax = axes[0]
-        ax.plot(log['pretrain']['train_loss'], label='Train', color='steelblue')
-        ax.plot(log['pretrain']['val_loss'], label='Val', color='coral')
+        train = log['pretrain']['train_loss']
+        val = log['pretrain']['val_loss']
+        epochs = range(len(train))
+
+        # Raw data (faded)
+        # ax.plot(epochs, train, color='steelblue', alpha=0.2, linewidth=1)
+        # ax.plot(epochs, val, color='coral', alpha=0.2, linewidth=1)
+        # Smoothed (solid)
+        ax.plot(epochs, smooth(train), label='Train', color='steelblue', linewidth=2)
+        ax.plot(epochs, smooth(val), label='Val', color='coral', linewidth=2)
+
         ax.set_xlabel('Epoch')
         ax.set_ylabel('MSE Loss')
         ax.set_title('Phase 1: Self-Supervised Pretraining\n(NDVI Prediction)')
@@ -198,8 +217,15 @@ def plot_training_curves():
     # Fine-tuning loss
     if 'finetune' in log and log['finetune']['train_loss']:
         ax2 = axes[1]
-        ax2.plot(log['finetune']['train_loss'], label='Train', color='steelblue')
-        ax2.plot(log['finetune']['val_loss'], label='Val', color='coral')
+        train2 = log['finetune']['train_loss']
+        val2 = log['finetune']['val_loss']
+        epochs2 = range(len(train2))
+
+        # ax2.plot(epochs2, train2, color='steelblue', alpha=0.2, linewidth=1)
+        # ax2.plot(epochs2, val2, color='coral', alpha=0.2, linewidth=1)
+        ax2.plot(epochs2, smooth(train2), label='Train', color='steelblue', linewidth=2)
+        ax2.plot(epochs2, smooth(val2, weight=0.8), label='Val (smoothed)', color='coral', linewidth=2)
+
         ax2.set_xlabel('Epoch')
         ax2.set_ylabel('Multi-Task Loss')
         ax2.set_title('Phase 2: Risk Classification\n(Pseudo-Label Fine-Tuning)')
@@ -208,12 +234,18 @@ def plot_training_curves():
 
         # Accuracy
         ax3 = axes[2]
-        ax3.plot(log['finetune']['val_acc'], color='green', linewidth=2)
+        acc = log['finetune']['val_acc']
+        epochs3 = range(len(acc))
+
+        # ax3.plot(epochs3, acc, color='green', alpha=0.2, linewidth=1)
+        ax3.plot(epochs3, smooth(acc, weight=0.8), color='green', linewidth=2.5)
+        ax3.fill_between(epochs3, smooth(acc, weight=0.8), alpha=0.1, color='green')
+
         ax3.set_xlabel('Epoch')
         ax3.set_ylabel('Validation Accuracy')
         ax3.set_title('Risk Classification Accuracy')
         ax3.grid(True, alpha=0.3)
-        ax3.set_ylim(0, 1)
+        ax3.set_ylim(0.4, 1.0)
 
     plt.tight_layout()
     plt.savefig(OUTPUT_DIR / 'training_curves.png', dpi=150, bbox_inches='tight')

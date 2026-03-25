@@ -40,37 +40,37 @@
 
 ```
                     ┌─────────────────────────────────────────────────────┐
-                    │            INPUT: 6 months × 9 bands × 64×64       │
-                    │     (B2, B3, B4, B8, B11, B12, NDVI, VV, VH)       │
+                    │            INPUT: 6 months × 9 bands × 64×64        │
+                    │     (B2, B3, B4, B8, B11, B12, NDVI, VV, VH)        │
                     └───────────────────────┬─────────────────────────────┘
                                             │
                     ┌───────────────────────▼─────────────────────────────┐
-                    │         SPATIAL ENCODER (2D-CNN, shared weights)     │
+                    │         SPATIAL ENCODER (2D-CNN, shared weights)    │
                     │         3 blocks: 32→64→128 channels                │
-                    │         Processes each month independently           │
-                    │         Output: 128-dim embedding per month          │
+                    │         Processes each month independently          │
+                    │         Output: 128-dim embedding per month         │
                     └───────────────────────┬─────────────────────────────┘
                                             │
                               6 monthly embeddings (6 × 128)
                                             │
-                    ┌───────────────────────▼─────────────────────────────┐
+                    ┌───────────────────────▼──────────────────────────-───┐
                     │         TEMPORAL ENCODER (1D-CNN + Attention)        │
                     │         Learns month-to-month growth patterns        │
                     │         Outputs: 64-dim embedding + attention weights│
-                    └───────────────────────┬─────────────────────────────┘
+                    └───────────────────────┬────────────────────────────-─┘
                                             │
-                    ┌───────────────────────▼─────────────────────────────┐
+                    ┌───────────────────────▼──────────────────────────-───┐
                     │              FUSION LAYER                            │
                     │   Temporal embedding (64) + Auxiliary features (20)  │
                     │   Weather / Soil / Elevation                         │
-                    │   MLP: 84 → 64 → 32                                 │
-                    └──────┬─────────────┬──────────────┬─────────────────┘
+                    │   MLP: 84 → 64 → 32                                  │
+                    └──────┬─────────────┬──────────────┬───────────────-──┘
                            │             │              │
-                    ┌──────▼──┐   ┌──────▼──────┐  ┌───▼────────┐
-                    │ NDVI    │   │ Risk Class  │  │ Risk Score │
-                    │ Predict │   │ Low/Med/High│  │   [0, 1]   │
-                    │ (SSL)   │   │ (3-class)   │  │ (regress)  │
-                    └─────────┘   └─────────────┘  └────────────┘
+                    ┌──────▼──┐   ┌──────▼──────┐   ┌───▼────────┐
+                    │ NDVI    │   │ Risk Class  │   │ Risk Score │
+                    │ Predict │   │ Low/Med/High│   │   [0, 1]   │
+                    │ (SSL)   │   │ (3-class)   │   │ (regress)  │
+                    └─────────┘   └─────────────┘   └────────────┘
 ```
 
 ### Training Strategy (No Ground Truth)
