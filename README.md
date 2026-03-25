@@ -55,43 +55,65 @@ Banks and microfinance institutions need to assess crop loan risk before approvi
 ## 🏗️ System Architecture
 
 ```
-                         SATELLITE IMAGERY (3.5 GB)
+                       SATELLITE IMAGERY (3.5 GB)
          ┌──────────────────────┬──────────────────────┐
          │   Sentinel-2 (10m)   │   Sentinel-1 (10m)   │
-         │   7 optical bands    │   VV + VH (SAR)       │
-         │   Cloud-masked       │   Cloud-free ✓        │
-         └──────────┬───────────┴──────────┬────────────┘
-                    │     9 bands/month     │
-                    └──────────┬────────────┘
+         │   7 optical bands    │   VV + VH (SAR)      │
+         │   Cloud-masked       │   Cloud-free ✓       │
+         └──────────┬───────────┴──────────┬───────────┘
+                    │                      │
+                    └─────── Combine ──────┘
+                               │
                                ▼
                     ┌─────────────────────┐
-                    │  64×64 pixel patches │
-                    │  (6 months × 9 bands)│
+                    │  9 BANDS PER MONTH  │
                     └──────────┬──────────┘
                                │
-              ┌────────────────┼────────────────┐
-              ▼                ▼                 ▼
-    ┌──────────────┐  ┌───────────────┐  ┌────────────────┐
-    │ SPATIAL CNN   │  │ TEMPORAL CNN  │  │ AUX FEATURES   │
-    │ 2D-CNN        │  │ 1D-CNN +      │  │ Weather (7)    │
-    │ per month     │  │ Attention     │  │ Soil (8)       │
-    │ (shared)      │  │ over 6 months │  │ Elevation (2)  │
-    │ → 128-dim     │  │ → 64-dim      │  │ → 20-dim       │
-    └──────┬───────┘  └──────┬────────┘  └───────┬────────┘
-           └─────────────────┼───────────────────┘
-                             ▼
-                    ┌─────────────────┐
-                    │  FUSION + MLP   │
-                    │  84 → 64 → 32   │
-                    └────────┬────────┘
-                             │
-              ┌──────────────┼──────────────┐
-              ▼              ▼              ▼
-        ┌──────────┐  ┌──────────┐  ┌──────────┐
-        │ Risk     │  │ Risk     │  │ NDVI     │
-        │ Class    │  │ Score    │  │ Predict  │
-        │ L/M/H    │  │ [0, 1]  │  │ (SSL)    │
-        └──────────┘  └──────────┘  └──────────┘
+                               ▼
+                 ┌───────────────────────────┐
+                 │   DATA PATCH GENERATION   │
+                 │   64×64 pixel patches     │
+                 │   (6 months × 9 bands)    │
+                 └─────────────┬─────────────┘
+                               │
+                               ▼
+                 ┌───────────────────────────┐
+                 │ SPATIAL FEATURE EXTRACTION│
+                 │ 2D-CNN per month          │
+                 │ (shared weights)          │
+                 │ → 128-dim embed per month │
+                 └─────────────┬─────────────┘
+                               │
+                               ▼
+                 ┌───────────────────────────┐
+                 │   6 monthly embeddings    │
+                 │        (6 × 128)          │
+                 └─────────────┬─────────────┘
+                               │
+          ┌────────────────────┴────────────────────┐
+          ▼                                         ▼
+┌───────────────────┐                     ┌───────────────────┐
+│ TEMPORAL FEATURE  │                     │ AUXILIARY FEATURES│
+│ EXTRACTION (CNN)  │                     │ Weather (7)       │
+│ 1D-CNN + Attention│                     │ Soil (11)         │
+│ over 6 months     │                     │ Elevation (2)     │
+│ → 64-dim + atten. │                     │ → 20-dim          │
+└─────────┬─────────┘                     └─────────┬─────────┘
+          │                                         │
+        64-dim ────────────────┬───────────────── 20-dim
+                               │
+                               ▼
+                 ┌───────────────────────────┐
+                 │ FUSION & MLP MODEL STAGE  │
+                 │ 84 → 64 → 32              │
+                 └─────────────┬─────────────┘
+                               │
+          ┌────────────────────┼────────────────────┐
+          ▼                    ▼                    ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│   RISK CLASS    │  │   RISK SCORE    │  │ NDVI PREDICTION │
+│ (Low/Med/High)  │  │     [0, 1]      │  │      (SSL)      │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
 ```
 
 ---
