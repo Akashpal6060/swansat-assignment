@@ -1,0 +1,56 @@
+============================================================
+  TRAINING CROP RISK ENCODER
+  Device: cuda
+  GPU: NVIDIA L40S
+  GPU Memory: 47.7 GB
+============================================================
+Loading data...
+  Patches: (21275, 6, 9, 64, 64)
+  Aux features: (21275, 20)
+  Labels distribution: [10637  6383  4255]
+  Device: cuda
+
+Model parameters: 328,070
+
+============================================================
+  PHASE 1: SELF-SUPERVISED PRETRAINING
+  Task: Predict masked month's NDVI from remaining months
+  Epochs: 30
+============================================================
+  Epoch   1/30 | Train Loss: 0.039461 | Val Loss: 0.055750 | LR: 9.97e-04 ★ saved
+  Epoch   5/30 | Train Loss: 0.019412 | Val Loss: 0.082285 | LR: 9.33e-04
+  Epoch  10/30 | Train Loss: 0.016737 | Val Loss: 0.065784 | LR: 7.50e-04
+  Epoch  15/30 | Train Loss: 0.015163 | Val Loss: 0.056155 | LR: 5.00e-04
+  Epoch  20/30 | Train Loss: 0.013249 | Val Loss: 0.070277 | LR: 2.50e-04
+  Epoch  25/30 | Train Loss: 0.013477 | Val Loss: 0.085961 | LR: 6.70e-05
+  Epoch  30/30 | Train Loss: 0.012505 | Val Loss: 0.062895 | LR: 0.00e+00
+
+  Best validation loss: 0.054130
+
+============================================================
+  PHASE 2: RISK CLASSIFICATION FINE-TUNING
+  Task: Classify patches as Low/Medium/High risk
+  Epochs: 50
+============================================================
+  Class counts: [10637  6383  4255]
+  Class weights: [0.58, 0.97, 1.45]
+  Epoch   1/50 | Train Loss: 0.5754 | Val Loss: 1.8654 | Val Acc: 0.408 ★ saved
+  Epoch   5/50 | Train Loss: 0.3273 | Val Loss: 0.5524 | Val Acc: 0.820 ★ saved
+  Epoch  10/50 | Train Loss: 0.2921 | Val Loss: 0.9757 | Val Acc: 0.799
+  Epoch  15/50 | Train Loss: 0.2667 | Val Loss: 1.0384 | Val Acc: 0.817
+  Epoch  20/50 | Train Loss: 0.2355 | Val Loss: 1.1845 | Val Acc: 0.801
+  Epoch  25/50 | Train Loss: 0.2239 | Val Loss: 0.6705 | Val Acc: 0.825
+  Epoch  30/50 | Train Loss: 0.2106 | Val Loss: 0.6283 | Val Acc: 0.838
+  Epoch  35/50 | Train Loss: 0.2089 | Val Loss: 0.7386 | Val Acc: 0.739
+  Epoch  40/50 | Train Loss: 0.1940 | Val Loss: 0.6121 | Val Acc: 0.809
+  Epoch  45/50 | Train Loss: 0.1874 | Val Loss: 1.8400 | Val Acc: 0.778
+  Epoch  50/50 | Train Loss: 0.1786 | Val Loss: 0.6661 | Val Acc: 0.831
+
+  Best validation accuracy: 0.842
+
+============================================================
+  TRAINING COMPLETE
+  Total time: 24.7 minutes
+  Models saved to: models
+  Next: python scripts/04_inference.py
+============================================================

@@ -382,150 +382,189 @@ def build_auxiliary_features(coords_df):
 
 def generate_pseudo_labels(patches, aux_features, aux_feature_names, coords_df):
     """
-    Generate risk pseudo-labels using domain knowledge rules.
-    These become training targets for the DL model.
-
-    APPROACH: Compute a continuous risk score from multiple signals,
-    then use PERCENTILE-BASED thresholds to ensure meaningful class 
-    distribution (~50% Low, ~30% Medium, ~20% High).
-
-    This reflects reality: in any given season, most fields do okay,
-    some face moderate stress, and a smaller fraction fails badly.
+    Generate risk pseudo-labels using UNSUPERVISED CLUSTERING.
+    
+    Instead of a weighted formula with arbitrary weights, we:
+    1. Extract meaningful features from satellite patches + auxiliary data
+    2. Run KMeans clustering (k=3) to find natural groupings
+    3. Assign risk labels by ranking clusters on crop health (NDVI)
+    
+    This is data-driven: the clusters emerge from actual patterns in the
+    satellite imagery, not from hand-tuned rules.
     """
-    print("\nStep 6: Generating pseudo-labels...")
-
+    print("\nStep 6: Generating pseudo-labels via unsupervised clustering...")
+    
+    from sklearn.cluster import KMeans
+    from sklearn.preprocessing import StandardScaler
+    
     N = len(patches)
-
+    
     # ================================================================
-    # COMPONENT 1: CROP HEALTH SCORE (from NDVI, weight=0.45)
+    # EXTRACT FEATURES FROM SATELLITE PATCHES
     # ================================================================
-    # Extract NDVI time series per patch (band 6, spatial mean)
-    ndvi_ts = patches[:, :, 6, :, :].mean(axis=(2, 3))  # (N, 6)
-
-    crop_health = np.zeros(N, dtype=np.float32)
-
+    print("  Extracting features from satellite patches...")
+    
+    patch_features = []
+    
+    # NDVI is band 6, VV is band 7, VH is band 8
+    ndvi_all = patches[:, :, 6, :, :]   # (N, 6, 64, 64)
+    vv_all = patches[:, :, 7, :, :]     # (N, 6, 64, 64)
+    vh_all = patches[:, :, 8, :, :]     # (N, 6, 64, 64)
+    
     for i in range(N):
-        ndvi = ndvi_ts[i]
-        valid = ndvi[ndvi > 0.01]  # ignore nodata
-
-        if len(valid) < 2:
-            crop_health[i] = 1.0  # No valid data = max risk
-            continue
-
-        ndvi_mean = valid.mean()
-        ndvi_peak = valid.max()
-        ndvi_std = valid.std()
-
-        # Peak timing: cotton should peak around month 3-4 (Aug-Sep)
-        peak_month = ndvi.argmax()
-        peak_timing_penalty = abs(peak_month - 3) * 0.05  # Penalty for off-schedule peak
-
-        # Decline rate from peak to harvest
-        if ndvi_peak > 0.01 and peak_month < 5:
-            decline = (ndvi[peak_month] - ndvi[5]) / ndvi[peak_month]
-            decline = max(0, decline)
+        ndvi = ndvi_all[i]  # (6, 64, 64)
+        vv = vv_all[i]
+        vh = vh_all[i]
+        
+        # --- NDVI-derived features ---
+        # Per-month spatial means (valid pixels only)
+        ndvi_monthly = []
+        for m in range(6):
+            valid = ndvi[m][ndvi[m] > 0.01]
+            ndvi_monthly.append(valid.mean() if len(valid) > 0 else 0)
+        ndvi_monthly = np.array(ndvi_monthly)
+        
+        ndvi_valid = ndvi[ndvi > 0.01]
+        ndvi_mean = ndvi_valid.mean() if len(ndvi_valid) > 0 else 0
+        ndvi_peak = ndvi_monthly.max()
+        ndvi_peak_month = ndvi_monthly.argmax()
+        
+        # Decline rate: peak to last month
+        if ndvi_peak > 0.01 and ndvi_peak_month < 5:
+            decline = (ndvi_monthly[ndvi_peak_month] - ndvi_monthly[5]) / (ndvi_peak + 1e-6)
         else:
-            decline = 0.5
-
-        # Spatial variability within patch (band 6)
-        ndvi_spatial = patches[i, :, 6, :, :]  # (6, 64, 64)
-        valid_spatial = ndvi_spatial[ndvi_spatial > 0.01]
-        spatial_cv = valid_spatial.std() / (valid_spatial.mean() + 1e-6) if len(valid_spatial) > 0 else 0.5
-
-        # Combine: higher score = MORE risk
-        # Invert NDVI (low NDVI = high risk), add decline and variability
-        crop_health[i] = (
-            0.35 * (1.0 - ndvi_mean) +          # Low overall greenness
-            0.25 * min(decline, 1.0) +            # Sharp decline
-            0.15 * min(spatial_cv, 1.0) +          # Within-field variability
-            0.15 * (1.0 - ndvi_peak) +             # Low peak vigor
-            0.10 * peak_timing_penalty              # Off-schedule growth
-        )
-
+            decline = 0
+        
+        # Spatial variability (coefficient of variation within patch)
+        spatial_cv = ndvi_valid.std() / (ndvi_mean + 1e-6) if len(ndvi_valid) > 10 else 0
+        
+        # Temporal variability
+        valid_months = ndvi_monthly[ndvi_monthly > 0.01]
+        temporal_std = valid_months.std() if len(valid_months) > 1 else 0
+        
+        # Growth trajectory: early season vs late season
+        early = ndvi_monthly[:3].mean()  # Jun-Aug
+        late = ndvi_monthly[3:].mean()   # Sep-Nov
+        season_ratio = late / (early + 1e-6)
+        
+        # --- SAR-derived features ---
+        vv_valid = vv[vv != 0]
+        vh_valid = vh[vh != 0]
+        vv_mean = vv_valid.mean() if len(vv_valid) > 0 else 0
+        vh_mean = vh_valid.mean() if len(vh_valid) > 0 else 0
+        
+        # VV/VH ratio trend (proxy for crop structure change)
+        vv_monthly = []
+        for m in range(6):
+            v = vv[m][vv[m] != 0]
+            vv_monthly.append(v.mean() if len(v) > 0 else 0)
+        vv_monthly = np.array(vv_monthly)
+        vv_trend = vv_monthly[5] - vv_monthly[0] if vv_monthly[0] != 0 else 0
+        
+        # Fraction of valid optical pixels (cloud-free coverage)
+        optical_valid_frac = (ndvi[ndvi > 0.01].size) / max(ndvi.size, 1)
+        
+        patch_features.append({
+            'ndvi_mean': ndvi_mean,
+            'ndvi_peak': ndvi_peak,
+            'ndvi_peak_month': ndvi_peak_month,
+            'ndvi_decline': decline,
+            'ndvi_spatial_cv': spatial_cv,
+            'ndvi_temporal_std': temporal_std,
+            'ndvi_season_ratio': season_ratio,
+            'ndvi_early': early,
+            'ndvi_late': late,
+            'vv_mean': vv_mean,
+            'vh_mean': vh_mean,
+            'vv_trend': vv_trend,
+            'optical_coverage': optical_valid_frac,
+        })
+    
+    # Combine patch-derived features with auxiliary features
+    patch_df = pd.DataFrame(patch_features)
+    aux_df = pd.DataFrame(aux_features, columns=aux_feature_names)
+    
+    # Select the most informative auxiliary features
+    aux_cols_to_use = [c for c in aux_feature_names if any(k in c for k in 
+        ['precip', 'rain', 'dry_spell', 'heat', 'drainage', 'elevation', 'soc', 'fertility'])]
+    
+    combined = pd.concat([patch_df, aux_df[aux_cols_to_use]], axis=1)
+    
+    # Fill NaN and standardize
+    combined = combined.fillna(0)
+    feature_names = list(combined.columns)
+    X = StandardScaler().fit_transform(combined.values)
+    
+    print(f"  Clustering on {X.shape[1]} features ({len(patch_df.columns)} from satellite + {len(aux_cols_to_use)} auxiliary)")
+    
     # ================================================================
-    # COMPONENT 2: ENVIRONMENTAL STRESS (from weather, weight=0.35)
+    # KMEANS CLUSTERING
     # ================================================================
-    env_stress = np.zeros(N, dtype=np.float32)
-
-    for i in range(N):
-        aux = dict(zip(aux_feature_names, aux_features[i]))
-
-        # All features are already normalized to [0, 1]
-        rain_anom = aux.get('rain_anomaly_frac', 0.5)
-        dry_spell = aux.get('max_dry_spell_days', 0.5)
-        heat = aux.get('heat_stress_days', 0.5)
-        excess_rain = aux.get('excess_rain_events', 0.0)
-        sept_precip = aux.get('sept_precip_mm', 0.5)
-
-        env_stress[i] = (
-            0.25 * rain_anom +                     # Rainfall anomaly
-            0.25 * dry_spell +                     # Drought duration
-            0.20 * heat +                          # Heat stress
-            0.15 * excess_rain +                   # Flood events
-            0.15 * (1.0 - sept_precip)              # Low Sept rain (critical for flowering)
-        )
-
+    kmeans = KMeans(n_clusters=3, random_state=42, n_init=10, max_iter=300)
+    clusters = kmeans.fit_predict(X)
+    
     # ================================================================
-    # COMPONENT 3: STRUCTURAL VULNERABILITY (soil/terrain, weight=0.20)
+    # MAP CLUSTERS TO RISK LEVELS
     # ================================================================
-    struct_vuln = np.zeros(N, dtype=np.float32)
-
-    for i in range(N):
-        aux = dict(zip(aux_feature_names, aux_features[i]))
-
-        drainage = aux.get('soil_drainage_class', 0.5)
-        soc = aux.get('soil_soc_pct_0_15cm', 0.5)
-        fertility = aux.get('soil_fertility_index', 0.5)
-        elevation = aux.get('elevation_m', 0.5)
-        slope = aux.get('slope_deg', 0.5)
-
-        struct_vuln[i] = (
-            0.30 * (1.0 - drainage) +              # Poor drainage = higher risk
-            0.25 * (1.0 - soc) +                   # Low organic carbon
-            0.20 * (1.0 - fertility) +              # Low fertility
-            0.15 * (1.0 - elevation) +              # Low-lying = flood prone
-            0.10 * (1.0 - slope)                    # Flat = waterlogging
-        )
-
+    # Rank clusters by mean NDVI: highest NDVI cluster = Low Risk
+    cluster_ndvi = {}
+    for c_id in range(3):
+        mask = clusters == c_id
+        cluster_ndvi[c_id] = patch_df.loc[mask, 'ndvi_mean'].mean()
+    
+    # Sort: highest NDVI → Low Risk (0), lowest NDVI → High Risk (2)
+    sorted_clusters = sorted(cluster_ndvi.keys(), key=lambda k: cluster_ndvi[k], reverse=True)
+    cluster_to_risk = {sorted_clusters[0]: 0, sorted_clusters[1]: 1, sorted_clusters[2]: 2}
+    
+    labels = np.array([cluster_to_risk[c] for c in clusters], dtype=np.int64)
+    
     # ================================================================
-    # COMBINE INTO FINAL SCORE
+    # COMPUTE CONTINUOUS RISK SCORES
     # ================================================================
-    risk_scores = (
-        0.45 * crop_health +
-        0.35 * env_stress +
-        0.20 * struct_vuln
-    )
-
-    # Rescale to use full [0, 1] range
+    # Distance from the "Low Risk" cluster center = risk score
+    low_risk_center = kmeans.cluster_centers_[sorted_clusters[0]]
+    high_risk_center = kmeans.cluster_centers_[sorted_clusters[2]]
+    
+    # Project each point onto the Low→High risk axis
+    risk_axis = high_risk_center - low_risk_center
+    risk_axis_norm = risk_axis / (np.linalg.norm(risk_axis) + 1e-6)
+    
+    risk_scores = np.array([
+        np.dot(X[i] - low_risk_center, risk_axis_norm) for i in range(N)
+    ], dtype=np.float32)
+    
+    # Normalize to [0, 1]
     rs_min, rs_max = risk_scores.min(), risk_scores.max()
     if rs_max - rs_min > 1e-6:
         risk_scores = (risk_scores - rs_min) / (rs_max - rs_min)
-
+    
     # ================================================================
-    # PERCENTILE-BASED CLASSIFICATION
+    # DIAGNOSTICS
     # ================================================================
-    # Target distribution: ~50% Low, ~30% Medium, ~20% High
-    # This is realistic: most fields survive, some struggle, few fail
-    p50 = np.percentile(risk_scores, 50)
-    p80 = np.percentile(risk_scores, 80)
-
-    labels = np.zeros(N, dtype=np.int64)
-    labels[risk_scores < p50] = 0   # Low risk (bottom 50%)
-    labels[(risk_scores >= p50) & (risk_scores < p80)] = 1  # Medium risk (50-80%)
-    labels[risk_scores >= p80] = 2  # High risk (top 20%)
-
-    # Print distribution and diagnostics
-    print(f"\n  Component score ranges:")
-    print(f"    Crop health:  [{crop_health.min():.3f}, {crop_health.max():.3f}] (mean: {crop_health.mean():.3f})")
-    print(f"    Env stress:   [{env_stress.min():.3f}, {env_stress.max():.3f}] (mean: {env_stress.mean():.3f})")
-    print(f"    Struct vuln:  [{struct_vuln.min():.3f}, {struct_vuln.max():.3f}] (mean: {struct_vuln.mean():.3f})")
-    print(f"  Final risk scores: [{risk_scores.min():.3f}, {risk_scores.max():.3f}]")
-    print(f"  Thresholds: Low < {p50:.3f} < Medium < {p80:.3f} < High")
-    print(f"\n  Label distribution:")
-    for label, name in enumerate(['Low Risk', 'Medium Risk', 'High Risk']):
-        count = (labels == label).sum()
-        print(f"    {name}: {count} patches ({100*count/N:.1f}%)")
-
+    print(f"\n  Cluster characteristics:")
+    risk_names = ['Low Risk', 'Medium Risk', 'High Risk']
+    for risk_level in range(3):
+        orig_cluster = sorted_clusters[risk_level]
+        mask = labels == risk_level
+        count = mask.sum()
+        ndvi_m = patch_df.loc[mask, 'ndvi_mean'].mean()
+        ndvi_p = patch_df.loc[mask, 'ndvi_peak'].mean()
+        decline_m = patch_df.loc[mask, 'ndvi_decline'].mean()
+        cv_m = patch_df.loc[mask, 'ndvi_spatial_cv'].mean()
+        print(f"    {risk_names[risk_level]:12s}: {count:5d} patches ({100*count/N:.1f}%) | "
+              f"NDVI mean={ndvi_m:.3f}, peak={ndvi_p:.3f}, decline={decline_m:.3f}, spatial_cv={cv_m:.3f}")
+    
+    print(f"\n  Risk score range: [{risk_scores.min():.3f}, {risk_scores.max():.3f}]")
+    print(f"  Features used for clustering: {feature_names}")
+    
+    # Verify clusters make sense (Low Risk should have highest NDVI)
+    ndvi_by_risk = [patch_df.loc[labels == r, 'ndvi_mean'].mean() for r in range(3)]
+    if ndvi_by_risk[0] > ndvi_by_risk[1] > ndvi_by_risk[2]:
+        print(f"\n  ✓ Cluster ordering validated: Low Risk NDVI ({ndvi_by_risk[0]:.3f}) > "
+              f"Medium ({ndvi_by_risk[1]:.3f}) > High ({ndvi_by_risk[2]:.3f})")
+    else:
+        print(f"\n  ⚠ Cluster NDVI ordering: {ndvi_by_risk} — check if mapping is correct")
+    
     return labels, risk_scores
 
 

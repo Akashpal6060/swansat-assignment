@@ -1,0 +1,52 @@
+============================================================
+  INFERENCE: GENERATING RISK SCORES
+  Device: cuda
+============================================================
+  Patches: (21275, 6, 9, 64, 64)
+  Generating predictions for 21275 patches...
+  Loaded model: risk_model.pth
+
+============================================================
+  RESULTS SUMMARY
+============================================================
+  Low Risk       : 11122 patches ( 52.3%) | avg score: 0.333 | avg conf: 0.957
+  Medium Risk    :  6658 patches ( 31.3%) | avg score: 0.510 | avg conf: 0.891
+  High Risk      :  3495 patches ( 16.4%) | avg score: 0.679 | avg conf: 0.934
+
+  Mean temporal attention:
+    Jun: 0.071 ███
+    Jul: 0.073 ███
+    Aug: 0.099 ████
+    Sep: 0.096 ████
+    Oct: 0.105 █████
+    Nov: 0.556 ███████████████████████████
+
+============================================================
+  SAMPLE EXPLANATIONS
+============================================================
+
+  --- Low Risk Example (Patch 596) ---
+  Risk Score: 0.154
+  Confidence: 1.0
+  Critical Months: [('Nov', 0.611), ('Aug', 0.125), ('Oct', 0.11)]
+  Top Features: [('slope_deg', 0.192), ('soil_drainage_class', 0.16), ('max_dry_spell_days', 0.07)]
+
+  --- Medium Risk Example (Patch 3279) ---
+  Risk Score: 0.533
+  Confidence: 1.0
+  Critical Months: [('Nov', 0.463), ('Oct', 0.157), ('Jun', 0.152)]
+  Top Features: [('soil_drainage_class', 0.374), ('soil_fertility_index', 0.132), ('soil_soc_pct_0_15cm', 0.123)]
+
+  --- High Risk Example (Patch 15487) ---
+  Risk Score: 0.82
+  Confidence: 1.0
+  Critical Months: [('Nov', 0.654), ('Oct', 0.12), ('Jun', 0.104)]
+  Top Features: [('elevation_m', 0.181), ('soil_soc_pct_0_15cm', 0.167), ('soil_drainage_class', 0.164)]
+
+  Generating Grad-CAM heatmaps for sample patches...
+
+============================================================
+  INFERENCE COMPLETE
+  Results: outputs/risk_scores.csv
+  Next: python scripts/05_visualize.py
+============================================================

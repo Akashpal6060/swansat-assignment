@@ -1,152 +1,152 @@
 [
   {
-    "patch_id": 221,
+    "patch_id": 596,
     "predicted_class": "Low Risk",
-    "risk_score": 0.109,
+    "risk_score": 0.154,
     "confidence": 1.0,
     "critical_months": [
       [
         "Nov",
-        0.504
+        0.611
+      ],
+      [
+        "Aug",
+        0.125
       ],
       [
         "Oct",
-        0.286
-      ],
-      [
-        "Sep",
-        0.094
+        0.11
       ]
     ],
     "top_features": [
-      [
-        "soil_drainage_class",
-        0.199
-      ],
-      [
-        "elevation_m",
-        0.112
-      ],
-      [
-        "soil_soc_pct_0_15cm",
-        0.097
-      ],
-      [
-        "heat_stress_days",
-        0.075
-      ],
-      [
-        "mean_temp_c",
-        0.068
-      ]
-    ],
-    "temporal_attention": {
-      "Jun": 0.047,
-      "Jul": 0.021,
-      "Aug": 0.047,
-      "Sep": 0.094,
-      "Oct": 0.286,
-      "Nov": 0.504
-    }
-  },
-  {
-    "patch_id": 16605,
-    "predicted_class": "Medium Risk",
-    "risk_score": 0.558,
-    "confidence": 1.0,
-    "critical_months": [
-      [
-        "Nov",
-        0.475
-      ],
-      [
-        "Oct",
-        0.224
-      ],
-      [
-        "Sep",
-        0.119
-      ]
-    ],
-    "top_features": [
-      [
-        "soil_soc_pct_0_15cm",
-        0.17
-      ],
-      [
-        "soil_drainage_class",
-        0.145
-      ],
-      [
-        "elevation_m",
-        0.145
-      ],
-      [
-        "heat_stress_days",
-        0.13
-      ],
-      [
-        "sept_precip_mm",
-        0.097
-      ]
-    ],
-    "temporal_attention": {
-      "Jun": 0.107,
-      "Jul": 0.012,
-      "Aug": 0.064,
-      "Sep": 0.119,
-      "Oct": 0.224,
-      "Nov": 0.475
-    }
-  },
-  {
-    "patch_id": 1080,
-    "predicted_class": "High Risk",
-    "risk_score": 0.879,
-    "confidence": 1.0,
-    "critical_months": [
-      [
-        "Nov",
-        0.361
-      ],
-      [
-        "Oct",
-        0.203
-      ],
-      [
-        "Sep",
-        0.149
-      ]
-    ],
-    "top_features": [
-      [
-        "soil_drainage_class",
-        0.174
-      ],
-      [
-        "elevation_m",
-        0.172
-      ],
-      [
-        "heat_stress_days",
-        0.113
-      ],
-      [
-        "sept_precip_mm",
-        0.091
-      ],
       [
         "slope_deg",
-        0.075
+        0.192
+      ],
+      [
+        "soil_drainage_class",
+        0.16
+      ],
+      [
+        "max_dry_spell_days",
+        0.07
+      ],
+      [
+        "soil_bulk_density_gcm3_0_15cm",
+        0.066
+      ],
+      [
+        "soil_fertility_index",
+        0.061
       ]
     ],
     "temporal_attention": {
-      "Jun": 0.123,
-      "Jul": 0.017,
-      "Aug": 0.147,
-      "Sep": 0.149,
-      "Oct": 0.203,
-      "Nov": 0.361
+      "Jun": 0.01,
+      "Jul": 0.09,
+      "Aug": 0.125,
+      "Sep": 0.055,
+      "Oct": 0.11,
+      "Nov": 0.611
+    }
+  },
+  {
+    "patch_id": 3279,
+    "predicted_class": "Medium Risk",
+    "risk_score": 0.533,
+    "confidence": 1.0,
+    "critical_months": [
+      [
+        "Nov",
+        0.463
+      ],
+      [
+        "Oct",
+        0.157
+      ],
+      [
+        "Jun",
+        0.152
+      ]
+    ],
+    "top_features": [
+      [
+        "soil_drainage_class",
+        0.374
+      ],
+      [
+        "soil_fertility_index",
+        0.132
+      ],
+      [
+        "soil_soc_pct_0_15cm",
+        0.123
+      ],
+      [
+        "elevation_m",
+        0.049
+      ],
+      [
+        "soil_nitrogen_pct_0_15cm",
+        0.041
+      ]
+    ],
+    "temporal_attention": {
+      "Jun": 0.152,
+      "Jul": 0.036,
+      "Aug": 0.059,
+      "Sep": 0.133,
+      "Oct": 0.157,
+      "Nov": 0.463
+    }
+  },
+  {
+    "patch_id": 15487,
+    "predicted_class": "High Risk",
+    "risk_score": 0.82,
+    "confidence": 1.0,
+    "critical_months": [
+      [
+        "Nov",
+        0.654
+      ],
+      [
+        "Oct",
+        0.12
+      ],
+      [
+        "Jun",
+        0.104
+      ]
+    ],
+    "top_features": [
+      [
+        "elevation_m",
+        0.181
+      ],
+      [
+        "soil_soc_pct_0_15cm",
+        0.167
+      ],
+      [
+        "soil_drainage_class",
+        0.164
+      ],
+      [
+        "heat_stress_days",
+        0.094
+      ],
+      [
+        "sept_precip_mm",
+        0.076
+      ]
+    ],
+    "temporal_attention": {
+      "Jun": 0.104,
+      "Jul": 0.035,
+      "Aug": 0.048,
+      "Sep": 0.039,
+      "Oct": 0.12,
+      "Nov": 0.654
     }
   }
 ]
