@@ -1,0 +1,14 @@
+# Ignore heavy data folders and files
+data/satellite/
+data/patches/
+data/**/*.tif
+data/**/*.npy
+
+# Ignore heavy model weights
+models/*.pth
+
+# Ignore Python and Jupyter cache files
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.DS_Store

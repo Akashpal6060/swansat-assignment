@@ -1,0 +1,152 @@
+[
+  {
+    "patch_id": 221,
+    "predicted_class": "Low Risk",
+    "risk_score": 0.109,
+    "confidence": 1.0,
+    "critical_months": [
+      [
+        "Nov",
+        0.504
+      ],
+      [
+        "Oct",
+        0.286
+      ],
+      [
+        "Sep",
+        0.094
+      ]
+    ],
+    "top_features": [
+      [
+        "soil_drainage_class",
+        0.199
+      ],
+      [
+        "elevation_m",
+        0.112
+      ],
+      [
+        "soil_soc_pct_0_15cm",
+        0.097
+      ],
+      [
+        "heat_stress_days",
+        0.075
+      ],
+      [
+        "mean_temp_c",
+        0.068
+      ]
+    ],
+    "temporal_attention": {
+      "Jun": 0.047,
+      "Jul": 0.021,
+      "Aug": 0.047,
+      "Sep": 0.094,
+      "Oct": 0.286,
+      "Nov": 0.504
+    }
+  },
+  {
+    "patch_id": 16605,
+    "predicted_class": "Medium Risk",
+    "risk_score": 0.558,
+    "confidence": 1.0,
+    "critical_months": [
+      [
+        "Nov",
+        0.475
+      ],
+      [
+        "Oct",
+        0.224
+      ],
+      [
+        "Sep",
+        0.119
+      ]
+    ],
+    "top_features": [
+      [
+        "soil_soc_pct_0_15cm",
+        0.17
+      ],
+      [
+        "soil_drainage_class",
+        0.145
+      ],
+      [
+        "elevation_m",
+        0.145
+      ],
+      [
+        "heat_stress_days",
+        0.13
+      ],
+      [
+        "sept_precip_mm",
+        0.097
+      ]
+    ],
+    "temporal_attention": {
+      "Jun": 0.107,
+      "Jul": 0.012,
+      "Aug": 0.064,
+      "Sep": 0.119,
+      "Oct": 0.224,
+      "Nov": 0.475
+    }
+  },
+  {
+    "patch_id": 1080,
+    "predicted_class": "High Risk",
+    "risk_score": 0.879,
+    "confidence": 1.0,
+    "critical_months": [
+      [
+        "Nov",
+        0.361
+      ],
+      [
+        "Oct",
+        0.203
+      ],
+      [
+        "Sep",
+        0.149
+      ]
+    ],
+    "top_features": [
+      [
+        "soil_drainage_class",
+        0.174
+      ],
+      [
+        "elevation_m",
+        0.172
+      ],
+      [
+        "heat_stress_days",
+        0.113
+      ],
+      [
+        "sept_precip_mm",
+        0.091
+      ],
+      [
+        "slope_deg",
+        0.075
+      ]
+    ],
+    "temporal_attention": {
+      "Jun": 0.123,
+      "Jul": 0.017,
+      "Aug": 0.147,
+      "Sep": 0.149,
+      "Oct": 0.203,
+      "Nov": 0.361
+    }
+  }
+]

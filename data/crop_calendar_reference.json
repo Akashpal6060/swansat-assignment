@@ -1,0 +1,58 @@
+{
+  "crop": "Cotton",
+  "variety": "Bt Cotton (common in Guntur)",
+  "season": "Kharif",
+  "district": "Guntur",
+  "state": "Andhra Pradesh",
+  "stages": [
+    {
+      "stage": "Sowing",
+      "month": "June",
+      "month_num": 6,
+      "description": "Seeds planted after pre-monsoon showers"
+    },
+    {
+      "stage": "Germination & Early Vegetative",
+      "month": "July",
+      "month_num": 7,
+      "description": "Seedling emergence, early leaf development"
+    },
+    {
+      "stage": "Peak Vegetative",
+      "month": "August",
+      "month_num": 8,
+      "description": "Maximum canopy development, highest leaf area"
+    },
+    {
+      "stage": "Flowering & Boll Setting",
+      "month": "September",
+      "month_num": 9,
+      "description": "Critical stage - water stress severely impacts yield"
+    },
+    {
+      "stage": "Boll Development",
+      "month": "October",
+      "month_num": 10,
+      "description": "Boll maturation, fiber development"
+    },
+    {
+      "stage": "Maturity & Harvest",
+      "month": "November",
+      "month_num": 11,
+      "description": "Boll opening, harvesting begins"
+    }
+  ],
+  "critical_risks": [
+    "Drought during flowering (Sept) - major yield loss",
+    "Excess rainfall during boll opening (Oct-Nov) - quality loss",
+    "Pink bollworm infestation - major pest threat",
+    "Waterlogging in low-lying areas during heavy monsoon",
+    "High temperature (>38\u00b0C) during flowering causes boll shedding"
+  ],
+  "ndvi_thresholds": {
+    "healthy": "> 0.5",
+    "moderate_stress": "0.3 - 0.5",
+    "severe_stress": "< 0.3",
+    "bare_soil": "< 0.15"
+  }
+}

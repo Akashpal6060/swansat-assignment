@@ -1,0 +1,65 @@
+lat,lon,clay_pct_0_15cm,sand_pct_0_15cm,silt_pct_0_15cm,soc_pct_0_15cm,ph_0_15cm,bulk_density_gcm3_0_15cm,cec_cmol_kg_0_15cm,nitrogen_pct_0_15cm,drainage_class,drainage_label,water_holding_capacity_mm_m,soil_type,fertility_index,source
+15.75,79.15,49.5,21.6,28.9,0.8,8.6,1.29,37.4,0.085,1,Poor,50.0,Vertisol (Black Cotton Soil),0.561,modeled_from_NBSS_LUP_survey_literature
+15.75,79.3929,43.7,26.8,29.5,0.7,8.2,1.33,31.1,0.049,1,Poor,50.0,Vertisol (Black Cotton Soil),0.475,modeled_from_NBSS_LUP_survey_literature
+15.75,79.6357,39.2,29.2,31.5,0.65,8.0,1.39,33.1,0.059,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.522,modeled_from_NBSS_LUP_survey_literature
+15.75,79.8786,37.8,31.8,30.4,0.62,8.2,1.33,30.8,0.051,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.47,modeled_from_NBSS_LUP_survey_literature
+15.75,80.1214,36.5,31.4,32.1,0.77,7.8,1.38,24.5,0.059,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.517,modeled_from_NBSS_LUP_survey_literature
+15.75,80.3643,35.9,38.2,25.8,0.68,7.9,1.33,25.5,0.058,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.499,modeled_from_NBSS_LUP_survey_literature
+15.75,80.6071,31.9,35.6,32.5,0.71,7.7,1.38,26.7,0.072,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.55,modeled_from_NBSS_LUP_survey_literature
+15.75,80.85,25.5,43.1,31.4,0.7,7.8,1.4,22.5,0.054,3,Well-drained,50.0,Mixed Vertisol-Alfisol Transition,0.48,modeled_from_NBSS_LUP_survey_literature
+15.9071,79.15,51.2,25.4,23.5,0.79,8.6,1.31,36.8,0.074,1,Poor,50.0,Vertisol (Black Cotton Soil),0.543,modeled_from_NBSS_LUP_survey_literature
+15.9071,79.3929,45.7,29.1,25.1,0.58,8.4,1.31,35.5,0.053,1,Poor,50.0,Vertisol (Black Cotton Soil),0.463,modeled_from_NBSS_LUP_survey_literature
+15.9071,79.6357,42.3,28.6,29.0,0.9,8.1,1.29,32.9,0.089,1,Poor,50.0,Vertisol (Black Cotton Soil),0.618,modeled_from_NBSS_LUP_survey_literature
+15.9071,79.8786,38.6,32.3,29.2,0.79,8.2,1.32,31.2,0.068,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.529,modeled_from_NBSS_LUP_survey_literature
+15.9071,80.1214,38.2,34.6,27.2,0.77,8.0,1.3,28.8,0.066,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.539,modeled_from_NBSS_LUP_survey_literature
+15.9071,80.3643,33.9,38.2,27.8,0.9,7.9,1.39,27.5,0.066,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.563,modeled_from_NBSS_LUP_survey_literature
+15.9071,80.6071,31.8,47.5,20.7,0.72,7.8,1.39,22.6,0.074,2,Moderate,50.0,Alfisol (Red Sandy Soil),0.527,modeled_from_NBSS_LUP_survey_literature
+15.9071,80.85,31.1,40.6,28.4,0.83,7.5,1.44,28.9,0.067,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.602,modeled_from_NBSS_LUP_survey_literature
+16.0643,79.15,49.7,19.1,31.2,0.73,8.4,1.24,40.0,0.058,1,Poor,50.0,Vertisol (Black Cotton Soil),0.525,modeled_from_NBSS_LUP_survey_literature
+16.0643,79.3929,44.2,22.7,33.0,0.91,8.1,1.31,40.0,0.069,1,Poor,50.0,Vertisol (Black Cotton Soil),0.615,modeled_from_NBSS_LUP_survey_literature
+16.0643,79.6357,44.5,29.2,26.3,0.74,8.0,1.34,35.3,0.069,1,Poor,50.0,Vertisol (Black Cotton Soil),0.569,modeled_from_NBSS_LUP_survey_literature
+16.0643,79.8786,38.8,30.7,30.5,0.86,8.0,1.41,33.6,0.068,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.584,modeled_from_NBSS_LUP_survey_literature
+16.0643,80.1214,35.1,35.5,29.4,0.92,7.9,1.39,31.3,0.09,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.64,modeled_from_NBSS_LUP_survey_literature
+16.0643,80.3643,34.4,34.0,31.6,0.74,7.8,1.37,29.0,0.069,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.558,modeled_from_NBSS_LUP_survey_literature
+16.0643,80.6071,32.3,43.8,23.9,0.77,8.2,1.41,23.9,0.061,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.478,modeled_from_NBSS_LUP_survey_literature
+16.0643,80.85,28.8,44.7,26.5,0.81,7.7,1.37,20.1,0.069,3,Well-drained,50.0,Mixed Vertisol-Alfisol Transition,0.537,modeled_from_NBSS_LUP_survey_literature
+16.2214,79.15,50.8,16.1,33.1,0.91,8.5,1.24,39.7,0.083,1,Poor,50.0,Vertisol (Black Cotton Soil),0.608,modeled_from_NBSS_LUP_survey_literature
+16.2214,79.3929,48.4,24.7,27.0,0.99,8.5,1.24,34.8,0.093,1,Poor,50.0,Vertisol (Black Cotton Soil),0.619,modeled_from_NBSS_LUP_survey_literature
+16.2214,79.6357,46.0,37.7,16.3,0.95,8.4,1.35,36.6,0.083,1,Poor,50.0,Vertisol (Black Cotton Soil),0.608,modeled_from_NBSS_LUP_survey_literature
+16.2214,79.8786,39.3,28.6,32.2,0.86,8.1,1.42,28.2,0.083,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.576,modeled_from_NBSS_LUP_survey_literature
+16.2214,80.1214,37.3,35.7,27.0,0.9,7.8,1.32,32.4,0.075,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.613,modeled_from_NBSS_LUP_survey_literature
+16.2214,80.3643,36.0,33.6,30.4,1.04,8.0,1.28,29.0,0.088,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.637,modeled_from_NBSS_LUP_survey_literature
+16.2214,80.6071,30.6,38.4,31.0,0.88,7.9,1.33,25.6,0.076,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.57,modeled_from_NBSS_LUP_survey_literature
+16.2214,80.85,35.4,43.1,21.5,0.72,7.8,1.48,26.9,0.053,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.504,modeled_from_NBSS_LUP_survey_literature
+16.3786,79.15,54.7,17.0,28.3,0.99,8.5,1.23,39.6,0.063,1,Poor,50.0,Vertisol (Black Cotton Soil),0.574,modeled_from_NBSS_LUP_survey_literature
+16.3786,79.3929,47.2,18.5,34.2,1.09,8.1,1.27,37.9,0.109,1,Poor,50.0,Vertisol (Black Cotton Soil),0.726,modeled_from_NBSS_LUP_survey_literature
+16.3786,79.6357,48.6,25.5,25.9,0.88,8.3,1.31,33.9,0.08,1,Poor,50.0,Vertisol (Black Cotton Soil),0.585,modeled_from_NBSS_LUP_survey_literature
+16.3786,79.8786,42.6,30.6,26.8,1.09,7.9,1.41,28.4,0.097,1,Poor,50.0,Vertisol (Black Cotton Soil),0.671,modeled_from_NBSS_LUP_survey_literature
+16.3786,80.1214,40.3,29.8,29.9,0.94,7.9,1.32,33.3,0.087,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.643,modeled_from_NBSS_LUP_survey_literature
+16.3786,80.3643,39.3,35.8,25.0,0.99,8.0,1.32,27.6,0.095,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.635,modeled_from_NBSS_LUP_survey_literature
+16.3786,80.6071,33.7,38.4,28.0,1.0,7.7,1.4,26.4,0.088,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.644,modeled_from_NBSS_LUP_survey_literature
+16.3786,80.85,33.3,43.6,23.1,0.97,7.7,1.42,23.9,0.09,2,Moderate,50.0,Mixed Vertisol-Alfisol Transition,0.632,modeled_from_NBSS_LUP_survey_literature
+16.5357,79.15,51.9,20.2,27.9,0.93,8.7,1.22,37.1,0.093,1,Poor,50.0,Vertisol (Black Cotton Soil),0.596,modeled_from_NBSS_LUP_survey_literature
+16.5357,79.3929,50.6,23.5,26.0,1.01,8.2,1.28,36.3,0.099,1,Poor,50.0,Vertisol (Black Cotton Soil),0.672,modeled_from_NBSS_LUP_survey_literature
+16.5357,79.6357,43.4,23.8,32.9,1.05,8.1,1.27,36.5,0.097,1,Poor,50.0,Vertisol (Black Cotton Soil),0.682,modeled_from_NBSS_LUP_survey_literature
+16.5357,79.8786,41.6,28.6,29.9,0.91,7.9,1.29,33.2,0.084,2,Moderate,50.0,Alluvial (Krishna River Basin),0.635,modeled_from_NBSS_LUP_survey_literature
+16.5357,80.1214,42.7,30.5,26.8,1.01,7.8,1.33,30.8,0.094,1,Poor,50.0,Vertisol (Black Cotton Soil),0.668,modeled_from_NBSS_LUP_survey_literature
+16.5357,80.3643,38.8,38.7,22.4,0.97,8.0,1.38,28.4,0.09,2,Moderate,50.0,Alluvial (Krishna River Basin),0.628,modeled_from_NBSS_LUP_survey_literature
+16.5357,80.6071,34.7,35.0,30.3,0.95,7.9,1.43,29.7,0.103,2,Moderate,50.0,Alluvial (Krishna River Basin),0.666,modeled_from_NBSS_LUP_survey_literature
+16.5357,80.85,34.2,41.0,24.8,1.1,7.6,1.35,23.6,0.082,2,Moderate,50.0,Alluvial (Krishna River Basin),0.649,modeled_from_NBSS_LUP_survey_literature
+16.6929,79.15,50.0,18.2,31.8,1.08,8.7,1.3,39.1,0.09,1,Poor,50.0,Vertisol (Black Cotton Soil),0.63,modeled_from_NBSS_LUP_survey_literature
+16.6929,79.3929,45.5,26.4,28.2,1.16,8.2,1.21,41.8,0.103,1,Poor,50.0,Vertisol (Black Cotton Soil),0.733,modeled_from_NBSS_LUP_survey_literature
+16.6929,79.6357,41.8,22.2,36.0,1.08,8.2,1.27,37.8,0.088,2,Moderate,50.0,Alluvial (Krishna River Basin),0.668,modeled_from_NBSS_LUP_survey_literature
+16.6929,79.8786,44.1,28.7,27.2,1.15,7.9,1.25,37.3,0.106,1,Poor,50.0,Vertisol (Black Cotton Soil),0.743,modeled_from_NBSS_LUP_survey_literature
+16.6929,80.1214,45.5,30.6,23.9,1.17,8.0,1.41,36.4,0.103,1,Poor,50.0,Vertisol (Black Cotton Soil),0.731,modeled_from_NBSS_LUP_survey_literature
+16.6929,80.3643,39.9,37.5,22.5,0.96,8.0,1.39,25.5,0.077,2,Moderate,50.0,Alluvial (Krishna River Basin),0.581,modeled_from_NBSS_LUP_survey_literature
+16.6929,80.6071,34.3,38.7,26.9,1.13,7.8,1.43,24.3,0.088,2,Moderate,50.0,Alluvial (Krishna River Basin),0.648,modeled_from_NBSS_LUP_survey_literature
+16.6929,80.85,33.4,39.6,26.9,0.8,7.7,1.32,27.2,0.075,2,Moderate,50.0,Alluvial (Krishna River Basin),0.585,modeled_from_NBSS_LUP_survey_literature
+16.85,79.15,51.5,13.8,34.7,1.09,8.5,1.21,42.3,0.094,1,Poor,50.0,Vertisol (Black Cotton Soil),0.672,modeled_from_NBSS_LUP_survey_literature
+16.85,79.3929,49.8,17.0,33.1,1.07,8.1,1.35,38.9,0.091,1,Poor,50.0,Vertisol (Black Cotton Soil),0.687,modeled_from_NBSS_LUP_survey_literature
+16.85,79.6357,46.9,22.6,30.4,1.18,8.3,1.26,35.3,0.104,1,Poor,50.0,Vertisol (Black Cotton Soil),0.699,modeled_from_NBSS_LUP_survey_literature
+16.85,79.8786,39.9,30.5,29.6,1.28,8.1,1.32,35.3,0.14,2,Moderate,50.0,Alluvial (Krishna River Basin),0.819,modeled_from_NBSS_LUP_survey_literature
+16.85,80.1214,41.2,26.7,32.1,1.01,8.0,1.29,28.9,0.086,2,Moderate,50.0,Alluvial (Krishna River Basin),0.622,modeled_from_NBSS_LUP_survey_literature
+16.85,80.3643,43.8,35.4,20.9,1.1,8.1,1.34,28.1,0.111,1,Poor,50.0,Vertisol (Black Cotton Soil),0.68,modeled_from_NBSS_LUP_survey_literature
+16.85,80.6071,32.7,35.3,32.0,0.99,7.6,1.39,32.9,0.078,2,Moderate,50.0,Alluvial (Krishna River Basin),0.666,modeled_from_NBSS_LUP_survey_literature
+16.85,80.85,31.0,37.5,31.4,0.97,7.6,1.37,23.9,0.09,2,Moderate,50.0,Alluvial (Krishna River Basin),0.644,modeled_from_NBSS_LUP_survey_literature
